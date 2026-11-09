@@ -5,6 +5,7 @@ on:
   push:
     branches: [main]
     paths: ["storefront/**", ".github/workflows/deploy-storefront.yml"]
+  workflow_dispatch:
 permissions:
   contents: read
   pages: write
