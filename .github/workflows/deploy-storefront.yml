@@ -1,0 +1,28 @@
+# Publishes the SetupBits storefront (storefront/ folder) to GitHub Pages on every push to main.
+# Static site: no build step needed. Payment links are direct Stripe URLs -> works anywhere.
+name: deploy-storefront
+on:
+  push:
+    branches: [main]
+    paths: ["storefront/**", ".github/workflows/deploy-storefront.yml"]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: storefront
+      - id: deployment
+        uses: actions/deploy-pages@v4
